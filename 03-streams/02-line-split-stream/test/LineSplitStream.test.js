@@ -72,9 +72,9 @@ describe('streams/line-split-stream', () => {
       this.timeout(0);
       const lines = new LineSplitStream({encoding: 'utf-8'});
 
-      const timeout = setTimeout(function () {
+      const timeout = setTimeout(function() {
         done(new Error('стрим должен предавать данные дальше как только есть вся строка, а не накапливать данные'))
-      }, 500)
+      }, 1000);
 
       const onData = sinon.spy(() => {
         lines.end();
@@ -83,11 +83,11 @@ describe('streams/line-split-stream', () => {
       lines.on('data', onData);
       lines.on('end', () => {
         expect(onData.firstCall.args[0]).to.equal('a');
-        clearTimeout(timeout)
+        clearTimeout(timeout);
         done();
       });
 
-      lines.write(`a${os.EOL}`)
-    })
+      lines.write(`a${os.EOL}`);
+    });
   });
 });
